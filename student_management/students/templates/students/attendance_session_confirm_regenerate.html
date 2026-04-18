@@ -1,0 +1,30 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Regenerate Attendance Code - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-arrow-repeat"></i> Regenerate Attendance Code</h1>
+</div>
+
+<div class="card">
+    <div class="card-body text-center py-5">
+        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
+        <h3 class="mt-4">A new code will be generated and the old one deleted.</h3>
+        <p class="text-muted">
+            <strong>{{ session.course.code }}</strong> - {{ session.course.name }}<br>
+            Date: {{ session.date }}<br>
+            Existing Code: <code>{{ session.code }}</code>
+        </p>
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning btn-lg">
+                <i class="bi bi-arrow-repeat"></i> Regenerate
+            </button>
+            <a href="{% url 'attendance_session_detail' session.pk %}" class="btn btn-secondary btn-lg">
+                <i class="bi bi-x-lg"></i> Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

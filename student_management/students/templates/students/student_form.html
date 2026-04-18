@@ -1,0 +1,88 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ title }} - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-person-plus"></i> {{ title }}</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_roll_number" class="form-label">Roll Number *</label>
+                    {{ form.roll_number }}
+                    {% if form.roll_number.errors %}
+                        <div class="text-danger small">{{ form.roll_number.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_email" class="form-label">Email *</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_first_name" class="form-label">First Name *</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <div class="text-danger small">{{ form.first_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_last_name" class="form-label">Last Name *</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <div class="text-danger small">{{ form.last_name.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="id_phone" class="form-label">Phone</label>
+                    {{ form.phone }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="id_gender" class="form-label">Gender</label>
+                    {{ form.gender }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="id_date_of_birth" class="form-label">Date of Birth *</label>
+                    {{ form.date_of_birth }}
+                    {% if form.date_of_birth.errors %}
+                        <div class="text-danger small">{{ form.date_of_birth.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="id_address" class="form-label">Address</label>
+                {{ form.address }}
+            </div>
+            <div class="mb-3">
+                <label for="id_courses" class="form-label">Enrolled Courses</label>
+                {{ form.courses }}
+                <small class="text-muted">Hold Ctrl/Cmd to select multiple courses</small>
+            </div>
+            <div class="mb-3 form-check">
+                {{ form.is_active }}
+                <label class="form-check-label" for="id_is_active">Active Student</label>
+            </div>
+            <hr>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg"></i> Save Student
+                </button>
+                <a href="{% url 'student_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-lg"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

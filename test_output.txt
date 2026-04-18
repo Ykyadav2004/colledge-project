@@ -1,0 +1,127 @@
+﻿C:/Users/91956/OneDrive/Desktop/edutrack/.venv/Scripts/python.exe : Creating 
+test database for alias 'default' 
+('file:memorydb_default?mode=memory&cache=shared')...
+At line:1 char:1
++ C:/Users/91956/OneDrive/Desktop/edutrack/.venv/Scripts/python.exe stu ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Creating test d...che=shared')... 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Found 9 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, sessions, students
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sessions.0001_initial... OK
+  Applying students.0001_initial... OK
+  Applying students.0002_attendancesession... OK
+  Applying students.0003_add_expires_and_defaults... OK
+test_code_expiration (students.tests.AttendanceCodeTests.test_code_expiration) 
+... ok
+test_date_filter_shows_only_selected_day 
+(students.tests.AttendanceCodeTests.test_date_filter_shows_only_selected_day) 
+... ok
+test_default_courses_exist 
+(students.tests.AttendanceCodeTests.test_default_courses_exist) ... ok
+test_delete_and_regenerate_session 
+(students.tests.AttendanceCodeTests.test_delete_and_regenerate_session) ... ok
+test_generate_duplicate_session 
+(students.tests.AttendanceCodeTests.test_generate_duplicate_session)
+Trying to create two sessions for same course+date should fail cleanly. ... ok
+test_invalid_code (students.tests.AttendanceCodeTests.test_invalid_code) ... ok
+test_marking_saves_time 
+(students.tests.AttendanceCodeTests.test_marking_saves_time) ... ok
+test_session_and_marking 
+(students.tests.AttendanceCodeTests.test_session_and_marking) ... ok
+test_update_attendance_status 
+(students.tests.AttendanceCodeTests.test_update_attendance_status) ... ERROR
+
+======================================================================
+ERROR: test_update_attendance_status 
+(students.tests.AttendanceCodeTests.test_update_attendance_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\student_management\students\te
+sts.py", line 135, in test_update_attendance_status
+    resp2 = self.client.post(url + '?date=2026-02-23', {'status': 'P'})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\test\client.py", line 1153, in post
+    response = super().post(
+               ^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\test\client.py", line 499, in post
+    return self.generic(
+           ^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\test\client.py", line 671, in generic
+    return self.request(**r)
+           ^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\test\client.py", line 1087, in request
+    self.check_exception(response)
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\test\client.py", line 802, in check_exception
+    raise exc_value
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\student_management\students\vi
+ews.py", line 225, in attendance_update_status
+    return redirect('attendance_list' + date_qs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\shortcuts.py", line 51, in redirect
+    resolve_url(to, *args, **kwargs),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\shortcuts.py", line 184, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\urls\base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\91956\OneDrive\Desktop\edutrack\.venv\Lib\site-packages\django
+\urls\resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 
+'attendance_list?date=2026-02-23' not found. 'attendance_list?date=2026-02-23' 
+is not a valid view function or pattern name.
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.062s
+
+FAILED (errors=1)
+Destroying test database for alias 'default' 
+('file:memorydb_default?mode=memory&cache=shared')...
+
+  Applying students.0004_add_location_fields... OK
+System check identified no issues (0 silenced).

@@ -1,0 +1,81 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ title }} - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-award"></i> {{ title }}</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_student" class="form-label">Student *</label>
+                    {{ form.student }}
+                    {% if form.student.errors %}
+                        <div class="text-danger small">{{ form.student.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_course" class="form-label">Course *</label>
+                    {{ form.course }}
+                    {% if form.course.errors %}
+                        <div class="text-danger small">{{ form.course.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_marks" class="form-label">Marks (0-100) *</label>
+                    {{ form.marks }}
+                    {% if form.marks.errors %}
+                        <div class="text-danger small">{{ form.marks.errors.0 }}</div>
+                    {% endif %}
+                    <small class="text-muted">Grade will be calculated automatically based on marks.</small>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_exam_type" class="form-label">Exam Type *</label>
+                    {{ form.exam_type }}
+                    {% if form.exam_type.errors %}
+                        <div class="text-danger small">{{ form.exam_type.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="id_remarks" class="form-label">Remarks</label>
+                {{ form.remarks }}
+            </div>
+            <hr>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg"></i> Save Grade
+                </button>
+                <a href="{% url 'grade_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-lg"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <i class="bi bi-info-circle"></i> Grading Scale
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3"><span class="badge bg-success">A+</span> 90-100%</div>
+            <div class="col-md-3"><span class="badge bg-success">A</span> 85-89%</div>
+            <div class="col-md-3"><span class="badge bg-info">B+</span> 80-84%</div>
+            <div class="col-md-3"><span class="badge bg-info">B</span> 75-79%</div>
+            <div class="col-md-3 mt-2"><span class="badge bg-warning">C+</span> 70-74%</div>
+            <div class="col-md-3 mt-2"><span class="badge bg-warning">C</span> 65-69%</div>
+            <div class="col-md-3 mt-2"><span class="badge bg-secondary">D</span> 60-64%</div>
+            <div class="col-md-3 mt-2"><span class="badge bg-danger">F</span> Below 60%</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

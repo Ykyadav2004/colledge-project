@@ -1,0 +1,171 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Dashboard - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h1><i class="bi bi-speedometer2"></i> Dashboard</h1>
+</div>
+
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card primary h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p>Total Students</p>
+                    <h3>{{ total_students }}</h3>
+                </div>
+                <i class="bi bi-people text-primary" style="font-size: 2.5rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card success h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p>Total Courses</p>
+                    <h3>{{ total_courses }}</h3>
+                </div>
+                <i class="bi bi-book text-success" style="font-size: 2.5rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card info h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p>Present Today</p>
+                    <h3>{{ present_today }}</h3>
+                </div>
+                <i class="bi bi-check-circle text-info" style="font-size: 2.5rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card warning h-100">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p>Absent Today</p>
+                    <h3>{{ absent_today }}</h3>
+                </div>
+                <i class="bi bi-x-circle text-warning" style="font-size: 2.5rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-people"></i> Recent Students</span>
+                <a href="{% url 'student_create' %}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus"></i> Add New
+                </a>
+            </div>
+            <div class="card-body">
+                {% if recent_students %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in recent_students %}
+                                <tr>
+                                    <td>{{ student.roll_number }}</td>
+                                    <td>{{ student.full_name }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>
+                                        <a href="{% url 'student_detail' student.pk %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center">No students added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <i class="bi bi-bar-chart"></i> Grade Distribution
+            </div>
+            <div class="card-body">
+                {% if grade_stats %}
+                    {% for stat in grade_stats %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="fw-bold">{{ stat.grade }}</span>
+                            <span>{{ stat.count }} student{{ stat.count|pluralize }}</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar
+                                {% if stat.grade == 'A+' or stat.grade == 'A' %}bg-success
+                                {% elif stat.grade == 'B+' or stat.grade == 'B' %}bg-info
+                                {% elif stat.grade == 'C+' or stat.grade == 'C' %}bg-warning
+                                {% else %}bg-danger{% endif %}"
+                                role="progressbar"
+                                style="width: {{ stat.count|default:0 }}0%">
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center">No grades recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-lightning"></i> Quick Actions
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'student_create' %}" class="btn btn-primary w-100 py-3">
+                            <i class="bi bi-person-plus d-block mb-2" style="font-size: 1.5rem;"></i>
+                            Add Student
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'course_create' %}" class="btn btn-success w-100 py-3">
+                            <i class="bi bi-journal-plus d-block mb-2" style="font-size: 1.5rem;"></i>
+                            Add Course
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'bulk_attendance' %}" class="btn btn-info w-100 py-3 text-white">
+                            <i class="bi bi-calendar-check d-block mb-2" style="font-size: 1.5rem;"></i>
+                            Mark Attendance
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% url 'grade_create' %}" class="btn btn-warning w-100 py-3">
+                            <i class="bi bi-award d-block mb-2" style="font-size: 1.5rem;"></i>
+                            Add Grades
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

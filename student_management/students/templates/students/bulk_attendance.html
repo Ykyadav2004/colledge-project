@@ -1,0 +1,69 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Bulk Attendance - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-people"></i> Bulk Attendance</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST" id="bulkAttendanceForm">
+            {% csrf_token %}
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <label for="id_course" class="form-label">Select Course *</label>
+                    {{ form.course }}
+                </div>
+                <div class="col-md-6">
+                    <label for="id_date" class="form-label">Date *</label>
+                    {{ form.date }}
+                </div>
+            </div>
+
+            <div id="studentList">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> Select a course to load enrolled students.
+                </div>
+            </div>
+
+            <hr>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                    <i class="bi bi-check-lg"></i> Save Attendance
+                </button>
+                <a href="{% url 'attendance_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-lg"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('id_course').addEventListener('change', function() {
+    const courseId = this.value;
+    const studentList = document.getElementById('studentList');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (courseId) {
+        fetch(`/attendance/course/${courseId}/students/`)
+            .then(response => response.text())
+            .then(html => {
+                studentList.innerHTML = html;
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                studentList.innerHTML = '<div class="alert alert-danger">Error loading students.</div>';
+                submitBtn.disabled = true;
+            });
+    } else {
+        studentList.innerHTML = '<div class="alert alert-info"><i class="bi bi-info-circle"></i> Select a course to load enrolled students.</div>';
+        submitBtn.disabled = true;
+    }
+});
+</script>
+{% endblock %}

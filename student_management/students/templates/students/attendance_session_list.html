@@ -1,0 +1,53 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Attendance Sessions - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-key"></i> Attendance Sessions</h1>
+    <a href="{% url 'attendance_session_create' %}" class="btn btn-success float-end">
+        <i class="bi bi-plus-lg"></i> New Session
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if sessions %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Date</th>
+                        <th>Code</th>
+                        <th>Remaining</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for sess in sessions %}
+                    <tr>
+                        <td>{{ sess.course.code }} - {{ sess.course.name }}</td>
+                        <td>{{ sess.date }}</td>
+                        <td>{{ sess.code }}</td>
+                        <td>{{ sess.remaining_seconds }}s</td>
+                        <td>
+                            <a href="{% url 'attendance_session_detail' sess.pk %}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                            <a href="{% url 'attendance_session_regenerate' sess.pk %}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </a>
+                            <a href="{% url 'attendance_session_delete' sess.pk %}" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No attendance sessions created yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

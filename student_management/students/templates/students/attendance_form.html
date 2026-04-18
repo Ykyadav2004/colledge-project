@@ -1,0 +1,59 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ title }} - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-calendar-check"></i> {{ title }}</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_student" class="form-label">Student *</label>
+                    {{ form.student }}
+                    {% if form.student.errors %}
+                        <div class="text-danger small">{{ form.student.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_course" class="form-label">Course *</label>
+                    {{ form.course }}
+                    {% if form.course.errors %}
+                        <div class="text-danger small">{{ form.course.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="id_date" class="form-label">Date *</label>
+                    {{ form.date }}
+                    {% if form.date.errors %}
+                        <div class="text-danger small">{{ form.date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="id_status" class="form-label">Status *</label>
+                    {{ form.status }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="id_remarks" class="form-label">Remarks</label>
+                {{ form.remarks }}
+            </div>
+            <hr>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-lg"></i> Save Attendance
+                </button>
+                <a href="{% url 'attendance_list' %}" class="btn btn-secondary">
+                    <i class="bi bi-x-lg"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

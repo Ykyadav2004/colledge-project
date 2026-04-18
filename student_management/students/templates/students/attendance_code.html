@@ -1,0 +1,53 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Enter Attendance Code - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-qr-code"></i> Mark Attendance</h1>
+    <p>Scan the QR code or type the code manually along with your roll number.</p>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_code" class="form-label">Attendance Code *</label>
+                {{ form.code }}
+            </div>
+            <div class="mb-3">
+                <label for="id_roll_number" class="form-label">Roll Number *</label>
+                {{ form.roll_number }}
+            </div>
+            {{ form.latitude }}
+            {{ form.longitude }}
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-lg"></i> Submit
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// attempt to get location and populate hidden fields
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            var lat = pos.coords.latitude.toFixed(6);
+            var lon = pos.coords.longitude.toFixed(6);
+            var latInput = document.getElementById('id_latitude');
+            var lonInput = document.getElementById('id_longitude');
+            if (latInput) latInput.value = lat;
+            if (lonInput) lonInput.value = lon;
+        },
+        function(err) {
+            console.warn('Geolocation error', err);
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+}
+</script>
+{% endblock %}

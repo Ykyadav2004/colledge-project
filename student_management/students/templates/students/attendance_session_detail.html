@@ -1,0 +1,50 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Session {{ session.code }} - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="bi bi-key-fill"></i> Session Details</h1>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Course:</strong> {{ session.course.code }} - {{ session.course.name }}</p>
+        <p><strong>Date:</strong> {{ session.date }}</p>
+        <p><strong>Code:</strong> <code>{{ session.code }}</code></p>
+        <p>
+            <strong>QR Code:</strong><br>
+            <img src="{% url 'attendance_session_qr' session.pk %}" alt="QR code for {{ session.code }}">
+        </p>
+        <p class="small text-muted">Students can scan this QR or enter the code <code>{{ session.code }}</code> at the attendance page.</p>
+        <p><strong>Expires in:</strong> <span id="countdown">--:--</span></p>
+        <div class="mt-3 d-flex gap-2">
+            <a href="{% url 'attendance_session_regenerate' session.pk %}" class="btn btn-warning">
+                <i class="bi bi-arrow-repeat"></i> Regenerate Code
+            </a>
+            <a href="{% url 'attendance_session_delete' session.pk %}" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Delete Code
+            </a>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+// simple countdown using remaining seconds passed from view
+let remaining = {{ remaining }};
+function pad(n){return n<10?'0'+n:n;}
+function tick(){
+    if(remaining<=0){
+        document.getElementById('countdown').innerText = 'Expired';
+        return;}
+    let m = Math.floor(remaining/60);
+    let s = remaining % 60;
+    document.getElementById('countdown').innerText = pad(m)+':'+pad(s);
+    remaining--;
+    setTimeout(tick,1000);
+}
+tick();
+</script>
+{% endblock %}
+{% endblock %}

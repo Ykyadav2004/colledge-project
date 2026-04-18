@@ -1,0 +1,88 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Attendance - Student Management System{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex justify-content-between align-items-center">
+    <h1><i class="bi bi-calendar-check"></i> Attendance</h1>
+    <div>
+        <a href="{% url 'attendance_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Mark Individual
+        </a>
+        <a href="{% url 'bulk_attendance' %}" class="btn btn-success">
+            <i class="bi bi-people"></i> Bulk Attendance
+        </a>
+    </div>
+</div>
+{% comment %} filter form {% endcomment %}
+<form method="get" class="mb-3">
+    <div class="row g-2 align-items-end">
+        <div class="col-auto">
+            <label for="id_filter_date" class="form-label">Show date:</label>
+            <input type="date" name="date" id="id_filter_date" class="form-control" value="{{ filter_date }}">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-secondary">Filter</button>
+        </div>
+        {% if filter_date %}
+        <div class="col-auto">
+            <a href="{% url 'attendance_list' %}" class="btn btn-link">Clear</a>
+        </div>
+        {% endif %}
+    </div>
+</form>
+
+<div class="card">
+    <div class="card-body">
+        {% if attendances %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Roll No</th>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attendance in attendances %}
+                        <tr>
+                            <td>{{ attendance.date }}</td>
+                            <td>{{ attendance.created_time }}</td>
+                            <td>{{ attendance.student.roll_number }}</td>
+                            <td>
+                                <a href="{% url 'student_detail' attendance.student.pk %}">
+                                    {{ attendance.student.full_name }}
+                                </a>
+                            </td>
+                            <td>{{ attendance.course.code }}</td>
+                            <td>
+                                <form method="post" action="{% url 'attendance_update_status' attendance.pk %}{% if filter_date %}?date={{ filter_date }}{% endif %}">
+                                    {% csrf_token %}
+                                    <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                                        <option value="P" {% if attendance.status == 'P' %}selected{% endif %}>Present</option>
+                                        <option value="A" {% if attendance.status == 'A' %}selected{% endif %}>Absent</option>
+                                        <option value="L" {% if attendance.status == 'L' %}selected{% endif %}>Late</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>{{ attendance.remarks|default:"-" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-calendar-check" style="font-size: 4rem; color: #ccc;"></i>
+                <p class="text-muted mt-3">No attendance records found.</p>
+                <a href="{% url 'bulk_attendance' %}" class="btn btn-primary">Mark Attendance</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
